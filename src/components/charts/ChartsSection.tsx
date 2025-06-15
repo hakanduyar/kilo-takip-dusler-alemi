@@ -56,6 +56,7 @@ export const ChartsSection = ({
         <WeeklyPlanChart
           weeklyData={filteredData}
           currentWeight={currentWeight}
+          chartType={chartType}
         />
         <ProgressCircle
           progress={stats.progress}
