@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { WeightEntry } from '@/components/WeightEntry';
 import { WeeklyPlan } from '@/components/WeeklyPlan';
@@ -48,7 +47,9 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
       // Load weight program
       const saved = localStorage.getItem('kiloTakipProgram');
       if (saved) {
-        setWeightProgram(JSON.parse(saved));
+        const program = JSON.parse(saved);
+        setWeightProgram(program);
+        console.log('Program verisi yüklendi:', program);
       }
 
       // Simulate loading time
@@ -89,6 +90,8 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
     
     setWeightProgram(program);
     localStorage.setItem('kiloTakipProgram', JSON.stringify(program));
+    
+    console.log('Yeni program oluşturuldu ve kaydedildi:', program);
     
     toast({
       title: "Program Başlatıldı! 🎉",
