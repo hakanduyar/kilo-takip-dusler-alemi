@@ -2,10 +2,9 @@
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { WeekData } from '@/types/weekly-plan';
 import { WeekInputCard } from './WeekInputCard';
-import { Calendar } from 'lucide-react';
+import { Calendar, Star } from 'lucide-react';
 
 interface WeeklyInputSystemProps {
   weeklyData: WeekData[];
@@ -40,18 +39,23 @@ export const WeeklyInputSystem = ({
   };
 
   return (
-    <Card className="bg-gradient-to-br from-white/90 to-blue-50/50 border-2 border-blue-200/60 backdrop-blur-sm">
-      <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
-          <Calendar className="h-5 w-5 text-blue-600" />
-          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Haftalık Kilo Takibi</span>
-          <Badge variant="outline" className="bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border-blue-300/50">
-            Aktif Hafta: {currentWeek}
+    <Card className="bg-gradient-to-br from-white via-orange-50/30 to-purple-50/30 border-2 border-orange-200/40 backdrop-blur-sm shadow-xl">
+      <CardHeader className="bg-gradient-to-r from-orange-500 via-purple-500 to-blue-500 text-white rounded-t-lg">
+        <CardTitle className="flex items-center space-x-3">
+          <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+            <Calendar className="h-6 w-6" />
+          </div>
+          <div className="flex-1">
+            <span className="text-xl font-bold">Haftalık Kilo Takibi</span>
+          </div>
+          <Badge className="bg-yellow-400 text-yellow-900 border-0 font-semibold px-3 py-1">
+            <Star className="h-4 w-4 mr-1" />
+            Hafta {currentWeek}
           </Badge>
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
+      <CardContent className="p-6">
+        <div className="space-y-6">
           {weeklyData.map((week) => {
             const status = getWeekStatus(week.week, week.actualWeight);
             const isEditable = week.week <= currentWeek;

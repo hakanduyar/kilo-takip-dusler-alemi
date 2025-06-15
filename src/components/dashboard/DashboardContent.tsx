@@ -28,10 +28,10 @@ export const DashboardContent = ({
   return (
     <div className="container-max container-padding py-8">
       <div className="mb-8 animate-fade-in">
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-yellow-500 bg-clip-text text-transparent mb-4">
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-purple-600 to-blue-500 bg-clip-text text-transparent mb-4">
           Hoş geldin! 👋
         </h2>
-        <p className="text-lg text-gray-600 max-w-2xl">
+        <p className="text-lg text-gray-700 max-w-2xl">
           {weightProgram 
             ? "Kilo takip programınız devam ediyor. Haftalık ilerlemenizi takip edin ve hedefinize ulaşın!"
             : "Kilo takip yolculuğun burada başlıyor. İlk olarak hedeflerini belirle ve bu muhteşem dönüşümü başlat."}
