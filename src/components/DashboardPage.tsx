@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { WeightEntry } from '@/components/WeightEntry';
 import { WeeklyPlan } from '@/components/WeeklyPlan';
@@ -122,6 +123,31 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
     return Math.abs(weightProgram.targetWeight - weightProgram.currentWeight) / weightProgram.programWeeks;
   };
 
+  const getLatestWeight = () => {
+    if (!weightProgram) return undefined;
+    
+    const storageKey = `kiloTakipWeeklyData_${weightProgram.currentWeight}_${weightProgram.targetWeight}_${weightProgram.programWeeks}`;
+    const savedData = localStorage.getItem(storageKey);
+    
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        const weeklyData = parsed.weeklyData || [];
+        
+        // En son girilen kilo değerini bul
+        const latestEntry = weeklyData
+          .filter((week: any) => week.actualWeight !== null)
+          .sort((a: any, b: any) => b.week - a.week)[0];
+          
+        return latestEntry?.actualWeight;
+      } catch (error) {
+        console.error('Haftalık veri okuma hatası:', error);
+      }
+    }
+    
+    return undefined;
+  };
+
   if (isLoading) {
     return <PageLoading />;
   }
@@ -178,6 +204,7 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
                       programWeeks={weightProgram.programWeeks}
                       progress={calculateProgress()}
                       weeklyTarget={getWeeklyTarget()}
+                      latestWeight={getLatestWeight()}
                     />
                   </div>
 
