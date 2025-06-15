@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -216,8 +215,8 @@ export const WeekInputCard = ({
             )}
 
             {!isEditable && status === 'pending' && (
-              <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                <div className="text-sm text-blue-800">
+              <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
+                <div className="text-sm text-purple-800">
                   Bu hafta henüz başlamadı. Girişlerinizi hafta başladığında yapabilirsiniz.
                 </div>
               </div>
