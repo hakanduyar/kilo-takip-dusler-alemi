@@ -41,7 +41,7 @@ export const DashboardContainer = ({ onLogout }: DashboardContainerProps) => {
   return (
     <AccessibilityProvider>
       <ErrorBoundary>
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-purple-50 relative overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-orange-50 to-yellow-50 relative overflow-hidden">
           <DashboardBackground />
 
           <div className="relative z-10">
@@ -56,7 +56,7 @@ export const DashboardContainer = ({ onLogout }: DashboardContainerProps) => {
               }
             />
 
-            <main className="bg-white/70 backdrop-blur-sm min-h-screen">
+            <main className="bg-white/60 backdrop-blur-sm min-h-screen">
               <DashboardContent
                 weightProgram={weightProgram}
                 onWeightEntryComplete={handleWeightEntryComplete}

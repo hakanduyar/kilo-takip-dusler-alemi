@@ -39,17 +39,17 @@ export const WeeklyPlan = ({ currentWeight, targetWeight, programWeeks, startDat
       />
 
       <Tabs defaultValue="input" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 bg-gradient-to-r from-orange-100 to-purple-100 p-1 rounded-xl">
+        <TabsList className="grid w-full grid-cols-2 bg-orange-100 p-1 rounded-xl">
           <TabsTrigger 
             value="input" 
-            className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-lg transition-all duration-200"
+            className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white rounded-lg transition-all duration-200"
           >
             <Calendar className="h-4 w-4" />
             Haftalık Takip
           </TabsTrigger>
           <TabsTrigger 
             value="charts" 
-            className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-lg transition-all duration-200"
+            className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white rounded-lg transition-all duration-200"
           >
             <BarChart3 className="h-4 w-4" />
             Grafikler
@@ -68,7 +68,7 @@ export const WeeklyPlan = ({ currentWeight, targetWeight, programWeeks, startDat
           <div className="mt-6 flex justify-end">
             <Button 
               onClick={saveProgress}
-              className="bg-gradient-to-r from-orange-500 via-purple-500 to-blue-500 hover:from-orange-600 hover:via-purple-600 hover:to-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
+              className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-semibold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
             >
               İlerlemeyi Kaydet
             </Button>
