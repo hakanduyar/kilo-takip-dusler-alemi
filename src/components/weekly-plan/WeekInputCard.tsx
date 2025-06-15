@@ -91,49 +91,37 @@ export const WeekInputCard = ({
   const hasExistingData = week.actualWeight !== null;
   const showInput = isEditable && (!hasExistingData || isEditing);
 
-  if (!isExpanded) {
-    return (
-      <div className="flex items-center justify-between w-full">
-        <div className="flex items-center space-x-3">
-          <div className="text-lg font-bold text-gray-900">Hafta {week.week}</div>
-          <div className="text-sm text-gray-500">{dateRange.start} - {dateRange.end}</div>
-          {getStatusBadge()}
-        </div>
-        <div className="flex items-center space-x-3">
-          <div className="text-right">
-            <div className="text-sm text-gray-600">Hedef: {week.targetWeight} kg</div>
-            {week.actualWeight && (
-              <div className="text-sm font-medium text-green-600">
-                Gerçek: {week.actualWeight} kg
-              </div>
-            )}
-          </div>
-          {hasExistingData && isEditable && !isEditing && (
-            <Button
-              onClick={handleEdit}
-              size="sm"
-              variant="outline"
-              className="flex items-center space-x-1"
-            >
-              <Edit2 className="h-3 w-3" />
-              <span>Düzenle</span>
-            </Button>
-          )}
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <Card className="border-0 shadow-none">
-      <CardContent className="p-0 space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <Card className={`mb-4 ${status === 'current' ? 'border-blue-500 bg-blue-50' : ''}`}>
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-4">
+            <div className="text-2xl font-bold text-gray-900">Hafta {week.week}</div>
+            <div className="text-sm text-gray-500 flex items-center space-x-1">
+              <Calendar className="h-4 w-4" />
+              <span>{dateRange.start} - {dateRange.end}</span>
+            </div>
+            {getStatusBadge()}
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="text-right">
+              <div className="text-sm text-gray-600">Hedef: {week.targetWeight} kg</div>
+              {week.actualWeight && (
+                <div className="text-sm font-medium text-green-600">
+                  Gerçek: {week.actualWeight} kg
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-3">
             <div className="flex items-center space-x-2">
               <Target className="h-5 w-5 text-blue-600" />
               <div>
                 <div className="text-sm text-gray-600">Hedef Kilo</div>
-                <div className="text-2xl font-bold text-blue-900">{week.targetWeight} kg</div>
+                <div className="text-xl font-bold text-blue-900">{week.targetWeight} kg</div>
               </div>
             </div>
             
@@ -141,7 +129,7 @@ export const WeekInputCard = ({
               <div className={`w-2 h-2 rounded-full ${week.targetChange < 0 ? 'bg-green-500' : 'bg-blue-500'}`} />
               <div>
                 <div className="text-sm text-gray-600">Hedef Değişim</div>
-                <div className={`text-lg font-semibold ${week.targetChange < 0 ? 'text-green-600' : 'text-blue-600'}`}>
+                <div className={`text-sm font-semibold ${week.targetChange < 0 ? 'text-green-600' : 'text-blue-600'}`}>
                   {week.targetChange > 0 ? '+' : ''}{week.targetChange} kg
                 </div>
               </div>
@@ -187,7 +175,7 @@ export const WeekInputCard = ({
               <div className="space-y-2">
                 <div className="text-sm font-medium text-gray-700">Kaydedilen Kilo:</div>
                 <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
-                  <div className="text-2xl font-bold text-green-700">{week.actualWeight} kg</div>
+                  <div className="text-xl font-bold text-green-700">{week.actualWeight} kg</div>
                   <Button
                     onClick={handleEdit}
                     size="sm"
@@ -211,7 +199,9 @@ export const WeekInputCard = ({
                 <span>{validationMessage}</span>
               </div>
             )}
+          </div>
 
+          <div className="space-y-3">
             {week.actualWeight && (
               <div className="p-3 bg-gray-50 rounded-lg">
                 <div className="text-sm text-gray-600">Gerçek Değişim</div>
@@ -224,18 +214,20 @@ export const WeekInputCard = ({
                 </div>
               </div>
             )}
+
+            {!isEditable && status === 'pending' && (
+              <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                <div className="text-sm text-blue-800">
+                  Bu hafta henüz başlamadı. Girişlerinizi hafta başladığında yapabilirsiniz.
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         {week.actualWeight && (
-          <MotivationMessage week={week} />
-        )}
-
-        {!isEditable && status === 'pending' && (
-          <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-            <div className="text-sm text-blue-800">
-              Bu hafta henüz başlamadı. Girişlerinizi hafta başladığında yapabilirsiniz.
-            </div>
+          <div className="mt-4">
+            <MotivationMessage week={week} />
           </div>
         )}
       </CardContent>

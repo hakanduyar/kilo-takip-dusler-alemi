@@ -1,7 +1,8 @@
 
 import { useState } from 'react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { WeekData } from '@/types/weekly-plan';
 import { WeekInputCard } from './WeekInputCard';
 import { Calendar } from 'lucide-react';
@@ -39,54 +40,38 @@ export const WeeklyInputSystem = ({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center space-x-2 mb-6">
-        <Calendar className="h-5 w-5 text-blue-600" />
-        <h3 className="text-lg font-semibold text-gray-900">Haftalık Kilo Girişi</h3>
-        <Badge variant="outline" className="bg-blue-50 text-blue-700">
-          Aktif Hafta: {currentWeek}
-        </Badge>
-      </div>
-
-      <Accordion type="single" collapsible defaultValue={`week-${currentWeek}`} className="space-y-3">
-        {weeklyData.map((week) => {
-          const status = getWeekStatus(week.week, week.actualWeight);
-          const isEditable = week.week <= currentWeek;
-          
-          return (
-            <AccordionItem 
-              key={week.week} 
-              value={`week-${week.week}`}
-              className="border rounded-lg overflow-hidden"
-            >
-              <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                <WeekInputCard
-                  week={week}
-                  status={status}
-                  actualWeight={actualWeights[week.week] || ''}
-                  onWeightUpdate={onWeightUpdate}
-                  onWeightSave={onWeightSave}
-                  startDate={startDate}
-                  isEditable={isEditable}
-                  isExpanded={false}
-                />
-              </AccordionTrigger>
-              <AccordionContent className="px-4 pb-4">
-                <WeekInputCard
-                  week={week}
-                  status={status}
-                  actualWeight={actualWeights[week.week] || ''}
-                  onWeightUpdate={onWeightUpdate}
-                  onWeightSave={onWeightSave}
-                  startDate={startDate}
-                  isEditable={isEditable}
-                  isExpanded={true}
-                />
-              </AccordionContent>
-            </AccordionItem>
-          );
-        })}
-      </Accordion>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center space-x-2">
+          <Calendar className="h-5 w-5 text-blue-600" />
+          <span>Haftalık Kilo Takibi</span>
+          <Badge variant="outline" className="bg-blue-50 text-blue-700">
+            Aktif Hafta: {currentWeek}
+          </Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {weeklyData.map((week) => {
+            const status = getWeekStatus(week.week, week.actualWeight);
+            const isEditable = week.week <= currentWeek;
+            
+            return (
+              <WeekInputCard
+                key={week.week}
+                week={week}
+                status={status}
+                actualWeight={actualWeights[week.week] || ''}
+                onWeightUpdate={onWeightUpdate}
+                onWeightSave={onWeightSave}
+                startDate={startDate}
+                isEditable={isEditable}
+                isExpanded={true}
+              />
+            );
+          })}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
