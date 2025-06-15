@@ -2,9 +2,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Target, BarChart3 } from 'lucide-react';
+import { Target, BarChart3, Calendar } from 'lucide-react';
 import { WeeklyPlanStats } from '@/components/weekly-plan/WeeklyPlanStats';
 import { WeeklyPlanTable } from '@/components/weekly-plan/WeeklyPlanTable';
+import { WeeklyInputSystem } from '@/components/weekly-plan/WeeklyInputSystem';
 import { ChartsSection } from '@/components/charts/ChartsSection';
 import { useWeeklyPlan } from '@/hooks/useWeeklyPlan';
 import { calculateStats } from '@/utils/weeklyPlanUtils';
@@ -21,6 +22,7 @@ export const WeeklyPlan = ({ currentWeight, targetWeight, programWeeks, startDat
     weeklyData,
     actualWeights,
     updateActualWeight,
+    saveWeightEntry,
     saveProgress
   } = useWeeklyPlan({ currentWeight, targetWeight, programWeeks, startDate });
 
@@ -37,8 +39,12 @@ export const WeeklyPlan = ({ currentWeight, targetWeight, programWeeks, startDat
         currentWeight={currentWeight}
       />
 
-      <Tabs defaultValue="plan" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
+      <Tabs defaultValue="input" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="input" className="flex items-center gap-2">
+            <Calendar className="h-4 w-4" />
+            Haftalık Girdi
+          </TabsTrigger>
           <TabsTrigger value="plan" className="flex items-center gap-2">
             <Target className="h-4 w-4" />
             Haftalık Plan
@@ -48,6 +54,16 @@ export const WeeklyPlan = ({ currentWeight, targetWeight, programWeeks, startDat
             Grafikler
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="input">
+          <WeeklyInputSystem
+            weeklyData={weeklyData}
+            actualWeights={actualWeights}
+            onWeightUpdate={updateActualWeight}
+            onWeightSave={saveWeightEntry}
+            startDate={startDate}
+          />
+        </TabsContent>
 
         <TabsContent value="plan">
           <Card>

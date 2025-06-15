@@ -28,7 +28,12 @@ export const useWeeklyPlan = ({
 
   const updateActualWeight = (week: number, weight: string) => {
     setActualWeights(prev => ({ ...prev, [week]: weight }));
-    
+  };
+
+  const saveWeightEntry = (week: number) => {
+    const weight = actualWeights[week];
+    if (!weight) return;
+
     const weightValue = parseFloat(weight);
     if (!isNaN(weightValue)) {
       setWeeklyData(prev => prev.map(data => {
@@ -48,6 +53,18 @@ export const useWeeklyPlan = ({
         }
         return data;
       }));
+
+      // Clear the input after saving
+      setActualWeights(prev => {
+        const newWeights = { ...prev };
+        delete newWeights[week];
+        return newWeights;
+      });
+
+      toast({
+        title: "Kilo Kaydedildi! 📊",
+        description: `Hafta ${week} kilo girişiniz başarıyla kaydedildi.`,
+      });
     }
   };
 
@@ -69,6 +86,7 @@ export const useWeeklyPlan = ({
     weeklyData,
     actualWeights,
     updateActualWeight,
+    saveWeightEntry,
     saveProgress
   };
 };
