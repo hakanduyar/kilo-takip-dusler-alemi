@@ -112,7 +112,7 @@ body {
 
 /* Hover Effects */
 .hover-lift {
-  @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-medium;
+  @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
 }
 
 .hover-glow {
