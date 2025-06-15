@@ -1,3 +1,4 @@
+
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { DashboardContent } from '@/components/dashboard/DashboardContent';
 import { DashboardBackground } from '@/components/dashboard/DashboardBackground';
@@ -40,7 +41,7 @@ export const DashboardContainer = ({ onLogout }: DashboardContainerProps) => {
   return (
     <AccessibilityProvider>
       <ErrorBoundary>
-        <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50 relative overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-50 relative overflow-hidden">
           <DashboardBackground />
 
           <div className="relative z-10">

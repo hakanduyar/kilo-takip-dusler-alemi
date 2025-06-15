@@ -16,12 +16,12 @@ export const DashboardHeader = ({
   notificationComponent 
 }: DashboardHeaderProps) => {
   return (
-    <header className="backdrop-blur-sm border-b border-white/20 sticky top-0 z-50 bg-gradient-to-r from-purple-500 to-pink-500">
+    <header className="backdrop-blur-sm border-b border-white/20 sticky top-0 z-50 bg-gradient-to-r from-blue-500 to-indigo-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <h1 className="text-2xl font-bold text-white drop-shadow-lg">
-              Kilo<span className="text-pink-200">Takip</span>
+              Kilo<span className="text-blue-200">Takip</span>
             </h1>
           </div>
           
