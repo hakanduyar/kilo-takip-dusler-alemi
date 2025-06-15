@@ -1,12 +1,12 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, TrendingDown, Target, Calendar } from 'lucide-react';
+import { Target } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { WeeklyPlanStats } from '@/components/weekly-plan/WeeklyPlanStats';
 
 interface WeeklyPlanProps {
   currentWeight: number;
@@ -68,12 +68,12 @@ export const WeeklyPlan = ({ currentWeight, targetWeight, programWeeks, startDat
             : weightValue - (prev.find(w => w.week === week - 1)?.actualWeight || currentWeight);
           
           let status: 'ahead' | 'on-track' | 'behind' = 'on-track';
-          const tolerance = 0.5; // 0.5kg tolerance
+          const tolerance = 0.5;
           
-          if (targetWeight < currentWeight) { // weight loss
+          if (targetWeight < currentWeight) {
             if (weightValue < data.targetWeight - tolerance) status = 'ahead';
             else if (weightValue > data.targetWeight + tolerance) status = 'behind';
-          } else { // weight gain
+          } else {
             if (weightValue > data.targetWeight + tolerance) status = 'ahead';
             else if (weightValue < data.targetWeight - tolerance) status = 'behind';
           }
@@ -137,60 +137,15 @@ export const WeeklyPlan = ({ currentWeight, targetWeight, programWeeks, startDat
 
   return (
     <div className="space-y-6">
-      {/* İstatistik Kartları */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <Target className="h-5 w-5 text-blue-600" />
-              <div>
-                <p className="text-sm text-blue-600 font-medium">Toplam Hedef</p>
-                <p className="text-lg font-bold text-blue-900">
-                  {stats.totalTarget.toFixed(1)} kg {targetWeight < currentWeight ? 'kayıp' : 'artış'}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <WeeklyPlanStats
+        totalTarget={stats.totalTarget}
+        weeklyAverage={stats.weeklyAverage}
+        remainingWeeks={stats.remainingWeeks}
+        progress={stats.progress}
+        targetWeight={targetWeight}
+        currentWeight={currentWeight}
+      />
 
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <TrendingDown className="h-5 w-5 text-purple-600" />
-              <div>
-                <p className="text-sm text-purple-600 font-medium">Haftalık Ortalama</p>
-                <p className="text-lg font-bold text-purple-900">{stats.weeklyAverage.toFixed(1)} kg</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <Calendar className="h-5 w-5 text-green-600" />
-              <div>
-                <p className="text-sm text-green-600 font-medium">Kalan Süre</p>
-                <p className="text-lg font-bold text-green-900">{stats.remainingWeeks} hafta</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <TrendingUp className="h-5 w-5 text-orange-600" />
-              <div>
-                <p className="text-sm text-orange-600 font-medium">İlerleme</p>
-                <p className="text-lg font-bold text-orange-900">%{Math.round(stats.progress)}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Haftalık Plan Tablosu */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">

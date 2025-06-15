@@ -1,9 +1,10 @@
+
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LogOut, User, Target, TrendingUp } from 'lucide-react';
 import { WeightEntry } from '@/components/WeightEntry';
 import { WeeklyPlan } from '@/components/WeeklyPlan';
+import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { StatsCards } from '@/components/dashboard/StatsCards';
+import { ProgramInfo } from '@/components/dashboard/ProgramInfo';
 import { useToast } from '@/hooks/use-toast';
 
 interface DashboardPageProps {
@@ -57,37 +58,8 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200/50 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                KiloTakip
-              </h1>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="hidden sm:flex items-center space-x-2">
-                <User className="h-5 w-5 text-gray-600" />
-                <span className="text-gray-700 font-medium">{user.email}</span>
-              </div>
-              
-              <Button
-                onClick={onLogout}
-                variant="outline"
-                size="sm"
-                className="flex items-center space-x-2 hover:bg-red-50 hover:border-red-200 hover:text-red-700 transition-colors"
-              >
-                <LogOut className="h-4 w-4" />
-                <span>Çıkış</span>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <DashboardHeader userEmail={user.email} onLogout={onLogout} />
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
@@ -104,55 +76,14 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
           <WeightEntry onComplete={handleWeightEntryComplete} />
         ) : (
           <>
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 hover:shadow-lg transition-shadow">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-blue-800">
-                    Mevcut Kilo
-                  </CardTitle>
-                  <TrendingUp className="h-4 w-4 text-blue-600" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-blue-900">{weightProgram.currentWeight} kg</div>
-                  <p className="text-xs text-blue-600 mt-1">
-                    Başlangıç kilosu
-                  </p>
-                </CardContent>
-              </Card>
+            <StatsCards
+              currentWeight={weightProgram.currentWeight}
+              targetWeight={weightProgram.targetWeight}
+              programWeeks={weightProgram.programWeeks}
+              progress={calculateProgress()}
+              weeklyTarget={getWeeklyTarget()}
+            />
 
-              <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 hover:shadow-lg transition-shadow">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-purple-800">
-                    Hedef Kilo
-                  </CardTitle>
-                  <Target className="h-4 w-4 text-purple-600" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-purple-900">{weightProgram.targetWeight} kg</div>
-                  <p className="text-xs text-purple-600 mt-1">
-                    {weightProgram.programWeeks} haftalık program
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200 hover:shadow-lg transition-shadow">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-green-800">
-                    İlerleme
-                  </CardTitle>
-                  <TrendingUp className="h-4 w-4 text-green-600" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-green-900">{Math.round(calculateProgress())}%</div>
-                  <p className="text-xs text-green-600 mt-1">
-                    Haftalık hedef: {getWeeklyTarget().toFixed(1)} kg
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Weekly Plan */}
             <WeeklyPlan
               currentWeight={weightProgram.currentWeight}
               targetWeight={weightProgram.targetWeight}
@@ -160,54 +91,10 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
               startDate={weightProgram.startDate}
             />
 
-            {/* Program Info */}
-            <Card className="mt-6 border-l-4 border-l-blue-500">
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Program Bilgileriniz</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                  <div>
-                    <span className="text-gray-600">Başlangıç:</span>
-                    <div className="font-medium">{new Date(weightProgram.startDate).toLocaleDateString('tr-TR')}</div>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Hedef Değişim:</span>
-                    <div className="font-medium">
-                      {Math.abs(weightProgram.targetWeight - weightProgram.currentWeight).toFixed(1)} kg
-                      {weightProgram.targetWeight > weightProgram.currentWeight ? ' artış' : ' azalış'}
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Kalan Süre:</span>
-                    <div className="font-medium">
-                      {Math.max(0, weightProgram.programWeeks - Math.floor((new Date().getTime() - new Date(weightProgram.startDate).getTime()) / (1000 * 60 * 60 * 24 * 7)))} hafta
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Haftalık Hedef:</span>
-                    <div className="font-medium">{getWeeklyTarget().toFixed(2)} kg</div>
-                  </div>
-                </div>
-                
-                <div className="mt-4 pt-4 border-t">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setWeightProgram(null);
-                      localStorage.removeItem('kiloTakipProgram');
-                      localStorage.removeItem('kiloTakipProgress');
-                      toast({
-                        title: "Program Sıfırlandı",
-                        description: "Yeni bir program oluşturabilirsiniz.",
-                      });
-                    }}
-                    className="text-red-600 border-red-200 hover:bg-red-50"
-                  >
-                    Programı Yeniden Başlat
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            <ProgramInfo
+              weightProgram={weightProgram}
+              onProgramReset={() => setWeightProgram(null)}
+            />
           </>
         )}
       </main>
