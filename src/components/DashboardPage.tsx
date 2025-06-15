@@ -4,6 +4,9 @@ import { WeightEntry } from '@/components/WeightEntry';
 import { WeeklyPlan } from '@/components/WeeklyPlan';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { StatsCards } from '@/components/dashboard/StatsCards';
+import { DetailedStats } from '@/components/dashboard/DetailedStats';
+import { AchievementSystem } from '@/components/dashboard/AchievementSystem';
+import { TrendAnalysis } from '@/components/dashboard/TrendAnalysis';
 import { ProgramInfo } from '@/components/dashboard/ProgramInfo';
 import { useToast } from '@/hooks/use-toast';
 
