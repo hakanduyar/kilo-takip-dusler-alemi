@@ -160,11 +160,11 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
     <AccessibilityProvider>
       <ErrorBoundary>
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 relative overflow-hidden">
-          {/* Animated background elements */}
+          {/* Enhanced animated background elements */}
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
-            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '2s'}}></div>
-            <div className="absolute top-40 left-1/2 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '4s'}}></div>
+            <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-300 to-yellow-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
+            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-300 to-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '2s'}}></div>
+            <div className="absolute top-40 left-1/2 w-80 h-80 bg-gradient-to-br from-yellow-200 to-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '4s'}}></div>
           </div>
 
           <div className="relative z-10">
@@ -182,7 +182,7 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
             <main className="bg-white/80 backdrop-blur-sm">
               <div className="container-max container-padding py-8">
                 <div className="mb-8 animate-fade-in">
-                  <h2 className="text-4xl font-bold text-gradient mb-4">
+                  <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-yellow-500 bg-clip-text text-transparent mb-4">
                     Hoş geldin! 👋
                   </h2>
                   <p className="text-lg text-gray-600 max-w-2xl">

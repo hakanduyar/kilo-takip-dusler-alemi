@@ -40,12 +40,12 @@ export const WeeklyInputSystem = ({
   };
 
   return (
-    <Card>
+    <Card className="bg-gradient-to-br from-white/90 to-blue-50/50 border-2 border-blue-200/60 backdrop-blur-sm">
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
           <Calendar className="h-5 w-5 text-blue-600" />
-          <span>Haftalık Kilo Takibi</span>
-          <Badge variant="outline" className="bg-blue-50 text-blue-700">
+          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Haftalık Kilo Takibi</span>
+          <Badge variant="outline" className="bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border-blue-300/50">
             Aktif Hafta: {currentWeek}
           </Badge>
         </CardTitle>
