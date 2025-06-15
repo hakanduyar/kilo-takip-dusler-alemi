@@ -179,45 +179,47 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
               }
             />
 
-            <main className="container-max container-padding py-8">
-              <div className="mb-8 animate-fade-in">
-                <h2 className="text-4xl font-bold text-gradient mb-4">
-                  Hoş geldin! 👋
-                </h2>
-                <p className="text-lg text-gray-600 max-w-2xl">
-                  {weightProgram 
-                    ? "Kilo takip programınız devam ediyor. Haftalık ilerlemenizi takip edin ve hedefinize ulaşın!"
-                    : "Kilo takip yolculuğun burada başlıyor. İlk olarak hedeflerini belirle ve bu muhteşem dönüşümü başlat."}
-                </p>
+            <main className="bg-white/80 backdrop-blur-sm">
+              <div className="container-max container-padding py-8">
+                <div className="mb-8 animate-fade-in">
+                  <h2 className="text-4xl font-bold text-gradient mb-4">
+                    Hoş geldin! 👋
+                  </h2>
+                  <p className="text-lg text-gray-600 max-w-2xl">
+                    {weightProgram 
+                      ? "Kilo takip programınız devam ediyor. Haftalık ilerlemenizi takip edin ve hedefinize ulaşın!"
+                      : "Kilo takip yolculuğun burada başlıyor. İlk olarak hedeflerini belirle ve bu muhteşem dönüşümü başlat."}
+                  </p>
+                </div>
+
+                {!weightProgram ? (
+                  <div className="animate-scale-in">
+                    <WeightEntry onComplete={handleWeightEntryComplete} />
+                  </div>
+                ) : (
+                  <div className="space-y-8">
+                    <div className="animate-slide-in-right">
+                      <StatsCards
+                        currentWeight={weightProgram.currentWeight}
+                        targetWeight={weightProgram.targetWeight}
+                        programWeeks={weightProgram.programWeeks}
+                        progress={calculateProgress()}
+                        weeklyTarget={getWeeklyTarget()}
+                        latestWeight={getLatestWeight()}
+                      />
+                    </div>
+
+                    <div className="animate-fade-in" style={{animationDelay: '0.2s'}}>
+                      <WeeklyPlan
+                        currentWeight={weightProgram.currentWeight}
+                        targetWeight={weightProgram.targetWeight}
+                        programWeeks={weightProgram.programWeeks}
+                        startDate={weightProgram.startDate}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-
-              {!weightProgram ? (
-                <div className="animate-scale-in">
-                  <WeightEntry onComplete={handleWeightEntryComplete} />
-                </div>
-              ) : (
-                <div className="space-y-8">
-                  <div className="animate-slide-in-right">
-                    <StatsCards
-                      currentWeight={weightProgram.currentWeight}
-                      targetWeight={weightProgram.targetWeight}
-                      programWeeks={weightProgram.programWeeks}
-                      progress={calculateProgress()}
-                      weeklyTarget={getWeeklyTarget()}
-                      latestWeight={getLatestWeight()}
-                    />
-                  </div>
-
-                  <div className="animate-fade-in" style={{animationDelay: '0.2s'}}>
-                    <WeeklyPlan
-                      currentWeight={weightProgram.currentWeight}
-                      targetWeight={weightProgram.targetWeight}
-                      programWeeks={weightProgram.programWeeks}
-                      startDate={weightProgram.startDate}
-                    />
-                  </div>
-                </div>
-              )}
             </main>
           </div>
 
