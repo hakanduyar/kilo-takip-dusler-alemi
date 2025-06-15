@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { WeekData } from '@/types/weekly-plan';
 import { WeightValidator } from './WeightValidator';
 import { MotivationMessage } from './MotivationMessage';
-import { Calendar, Target, Save, AlertCircle } from 'lucide-react';
+import { Calendar, Target, Save, Edit2, AlertCircle } from 'lucide-react';
 
 interface WeekInputCardProps {
   week: WeekData;
@@ -32,6 +32,7 @@ export const WeekInputCard = ({
 }: WeekInputCardProps) => {
   const [validationMessage, setValidationMessage] = useState<string>('');
   const [validationType, setValidationType] = useState<'success' | 'warning' | 'error'>('success');
+  const [isEditing, setIsEditing] = useState(false);
 
   const getWeekDateRange = () => {
     const start = new Date(startDate);
@@ -74,10 +75,21 @@ export const WeekInputCard = ({
   const handleSave = () => {
     onWeightSave(week.week);
     setValidationMessage('');
+    setIsEditing(false);
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+    // Set current actual weight to input for editing
+    if (week.actualWeight) {
+      onWeightUpdate(week.week, week.actualWeight.toString());
+    }
   };
 
   const dateRange = getWeekDateRange();
   const hasUnsavedChanges = actualWeight && !week.actualWeight;
+  const hasExistingData = week.actualWeight !== null;
+  const showInput = isEditable && (!hasExistingData || isEditing);
 
   if (!isExpanded) {
     return (
@@ -96,6 +108,17 @@ export const WeekInputCard = ({
               </div>
             )}
           </div>
+          {hasExistingData && isEditable && !isEditing && (
+            <Button
+              onClick={handleEdit}
+              size="sm"
+              variant="outline"
+              className="flex items-center space-x-1"
+            >
+              <Edit2 className="h-3 w-3" />
+              <span>Düzenle</span>
+            </Button>
+          )}
         </div>
       </div>
     );
@@ -126,30 +149,57 @@ export const WeekInputCard = ({
           </div>
 
           <div className="space-y-3">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                Bu hafta kilonuz?
-              </label>
-              <div className="flex space-x-2">
-                <Input
-                  type="number"
-                  placeholder="Kilonuzu girin"
-                  value={actualWeight}
-                  onChange={(e) => handleWeightChange(e.target.value)}
-                  disabled={!isEditable}
-                  className="flex-1"
-                  step="0.1"
-                  min="30"
-                  max="300"
-                />
-                {isEditable && hasUnsavedChanges && (
+            {showInput ? (
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">
+                  {isEditing ? 'Kilonuzu güncelleyin:' : 'Bu hafta kilonuz?'}
+                </label>
+                <div className="flex space-x-2">
+                  <Input
+                    type="number"
+                    placeholder="Kilonuzu girin"
+                    value={actualWeight}
+                    onChange={(e) => handleWeightChange(e.target.value)}
+                    className="flex-1"
+                    step="0.1"
+                    min="30"
+                    max="300"
+                  />
                   <Button onClick={handleSave} size="sm" className="flex items-center space-x-1">
                     <Save className="h-4 w-4" />
-                    <span>Kaydet</span>
+                    <span>{isEditing ? 'Güncelle' : 'Kaydet'}</span>
                   </Button>
-                )}
+                  {isEditing && (
+                    <Button 
+                      onClick={() => {
+                        setIsEditing(false);
+                        onWeightUpdate(week.week, '');
+                      }} 
+                      size="sm" 
+                      variant="outline"
+                    >
+                      İptal
+                    </Button>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : hasExistingData ? (
+              <div className="space-y-2">
+                <div className="text-sm font-medium text-gray-700">Kaydedilen Kilo:</div>
+                <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                  <div className="text-2xl font-bold text-green-700">{week.actualWeight} kg</div>
+                  <Button
+                    onClick={handleEdit}
+                    size="sm"
+                    variant="outline"
+                    className="flex items-center space-x-1"
+                  >
+                    <Edit2 className="h-4 w-4" />
+                    <span>Düzenle</span>
+                  </Button>
+                </div>
+              </div>
+            ) : null}
 
             {validationMessage && (
               <div className={`flex items-center space-x-2 text-sm ${

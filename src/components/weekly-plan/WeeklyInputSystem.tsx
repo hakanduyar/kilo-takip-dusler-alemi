@@ -1,13 +1,10 @@
 
 import { useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { WeekData } from '@/types/weekly-plan';
 import { WeekInputCard } from './WeekInputCard';
-import { Calendar, Target } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 interface WeeklyInputSystemProps {
   weeklyData: WeekData[];
