@@ -1,9 +1,9 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LogOut, User, Target, TrendingUp } from 'lucide-react';
 import { WeightEntry } from '@/components/WeightEntry';
+import { WeeklyPlan } from '@/components/WeeklyPlan';
 import { useToast } from '@/hooks/use-toast';
 
 interface DashboardPageProps {
@@ -95,7 +95,7 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
           </h2>
           <p className="text-gray-600">
             {weightProgram 
-              ? "Kilo takip programınız devam ediyor. İlerlemenizi takip edin!"
+              ? "Kilo takip programınız devam ediyor. Haftalık ilerlemenizi takip edin!"
               : "Kilo takip yolculuğun burada başlıyor. İlk olarak hedeflerini belirle."}
           </p>
         </div>
@@ -152,42 +152,13 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
               </Card>
             </div>
 
-            {/* Action Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-3">
-                    Bugünkü Kilonuzu Kaydedin 📊
-                  </h3>
-                  <p className="text-blue-100 mb-4">
-                    Düzenli kilo takibi hedefinize ulaşmanın anahtarıdır.
-                  </p>
-                  <Button 
-                    variant="secondary" 
-                    className="bg-white/20 backdrop-blur-sm text-white border-white/30 hover:bg-white/30"
-                  >
-                    Kilo Kaydet
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-to-r from-green-500 to-teal-600 text-white hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-3">
-                    İlerleme Raporunuz 📈
-                  </h3>
-                  <p className="text-green-100 mb-4">
-                    Haftalık ve aylık ilerlemenizi grafiklerle görün.
-                  </p>
-                  <Button 
-                    variant="secondary" 
-                    className="bg-white/20 backdrop-blur-sm text-white border-white/30 hover:bg-white/30"
-                  >
-                    Raporu Görüntüle
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
+            {/* Weekly Plan */}
+            <WeeklyPlan
+              currentWeight={weightProgram.currentWeight}
+              targetWeight={weightProgram.targetWeight}
+              programWeeks={weightProgram.programWeeks}
+              startDate={weightProgram.startDate}
+            />
 
             {/* Program Info */}
             <Card className="mt-6 border-l-4 border-l-blue-500">
@@ -224,6 +195,7 @@ export const DashboardPage = ({ onLogout }: DashboardPageProps) => {
                     onClick={() => {
                       setWeightProgram(null);
                       localStorage.removeItem('kiloTakipProgram');
+                      localStorage.removeItem('kiloTakipProgress');
                       toast({
                         title: "Program Sıfırlandı",
                         description: "Yeni bir program oluşturabilirsiniz.",
