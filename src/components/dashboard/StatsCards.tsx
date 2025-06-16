@@ -36,34 +36,19 @@ export const StatsCards = ({
         </CardContent>
       </Card>
 
-      <Card className="bg-gradient-to-br from-green-50 via-green-100 to-green-200 border-2 border-green-300/60 hover:border-green-400/80 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-green-800">
-            Mevcut Kilo
-          </CardTitle>
-          <Activity className="h-4 w-4 text-green-600" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
-            {latestWeight ? `${latestWeight} kg` : `${currentWeight} kg`}
-          </div>
-          <p className="text-xs text-green-600 mt-1 font-medium">
-            {latestWeight ? 'Son girilen kilo' : 'Henüz girilen kilo yok'}
-          </p>
-        </CardContent>
-      </Card>
-
       <Card className="bg-gradient-to-br from-indigo-50 via-indigo-100 to-indigo-200 border-2 border-indigo-300/60 hover:border-indigo-400/80 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-indigo-800">
-            Hedef Kilo
+            Mevcut Kilo
           </CardTitle>
-          <Target className="h-4 w-4 text-indigo-600" />
+          <Activity className="h-4 w-4 text-indigo-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold bg-gradient-to-r from-indigo-700 to-indigo-900 bg-clip-text text-transparent">{targetWeight} kg</div>
+          <div className="text-2xl font-bold bg-gradient-to-r from-indigo-700 to-indigo-900 bg-clip-text text-transparent">
+            {latestWeight ? `${latestWeight} kg` : `${currentWeight} kg`}
+          </div>
           <p className="text-xs text-indigo-600 mt-1 font-medium">
-            {programWeeks} haftalık program
+            {latestWeight ? 'Son girilen kilo' : 'Henüz girilen kilo yok'}
           </p>
         </CardContent>
       </Card>
@@ -71,13 +56,28 @@ export const StatsCards = ({
       <Card className="bg-gradient-to-br from-purple-50 via-purple-100 to-purple-200 border-2 border-purple-300/60 hover:border-purple-400/80 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-purple-800">
-            İlerleme
+            Hedef Kilo
           </CardTitle>
-          <TrendingUp className="h-4 w-4 text-purple-600" />
+          <Target className="h-4 w-4 text-purple-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold bg-gradient-to-r from-purple-700 to-purple-900 bg-clip-text text-transparent">{Math.round(progress)}%</div>
+          <div className="text-2xl font-bold bg-gradient-to-r from-purple-700 to-purple-900 bg-clip-text text-transparent">{targetWeight} kg</div>
           <p className="text-xs text-purple-600 mt-1 font-medium">
+            {programWeeks} haftalık program
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-gradient-to-br from-teal-50 via-teal-100 to-teal-200 border-2 border-teal-300/60 hover:border-teal-400/80 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium text-teal-800">
+            İlerleme
+          </CardTitle>
+          <TrendingUp className="h-4 w-4 text-teal-600" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold bg-gradient-to-r from-teal-700 to-teal-900 bg-clip-text text-transparent">{Math.round(progress)}%</div>
+          <p className="text-xs text-teal-600 mt-1 font-medium">
             Haftalık hedef: {weeklyTarget.toFixed(1)} kg
           </p>
         </CardContent>
