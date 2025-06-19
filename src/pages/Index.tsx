@@ -2,16 +2,14 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { AuthModal } from '@/components/AuthModal';
-import { DashboardPage } from '@/components/DashboardPage';
+import { DashboardContainer } from '@/components/dashboard/DashboardContainer';
+import { useAuth } from '@/hooks/useAuth';
+import { PageLoading } from '@/components/states/LoadingStates';
 
 const Index = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const user = localStorage.getItem('kiloTakipUser');
-    console.log('Initial auth check:', user);
-    return user !== null;
-  });
+  const { user, loading, signOut } = useAuth();
 
   const handleLogin = () => {
     setAuthMode('login');
@@ -24,19 +22,21 @@ const Index = () => {
   };
 
   const handleAuthSuccess = () => {
-    console.log('Auth success, setting logged in state');
-    setIsLoggedIn(true);
+    console.log('Auth success, closing modal');
     setShowAuth(false);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     console.log('Logging out...');
-    localStorage.removeItem('kiloTakipUser');
-    setIsLoggedIn(false);
+    await signOut();
   };
 
-  if (isLoggedIn) {
-    return <DashboardPage onLogout={handleLogout} />;
+  if (loading) {
+    return <PageLoading />;
+  }
+
+  if (user) {
+    return <DashboardContainer onLogout={handleLogout} />;
   }
 
   return (

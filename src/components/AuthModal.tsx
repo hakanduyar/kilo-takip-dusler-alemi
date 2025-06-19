@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { signUp, signIn } = useAuth();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,31 +31,6 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
 
   const validatePassword = (password: string) => {
     return password.length >= 6;
-  };
-
-  // Improved user data management
-  const saveUserData = (email: string, password: string) => {
-    const userData = {
-      email,
-      password,
-      registeredAt: new Date().toISOString()
-    };
-    
-    // Save with consistent key format
-    const userKey = `kiloTakip_user_${email.toLowerCase()}`;
-    localStorage.setItem(userKey, JSON.stringify(userData));
-    
-    // Set current user session
-    localStorage.setItem('kiloTakipUser', JSON.stringify({ email: email.toLowerCase() }));
-    
-    console.log('User data saved:', { email: email.toLowerCase(), userKey });
-  };
-
-  const getUserData = (email: string) => {
-    const userKey = `kiloTakip_user_${email.toLowerCase()}`;
-    const userData = localStorage.getItem(userKey);
-    console.log('Looking for user:', { email: email.toLowerCase(), userKey, found: !!userData });
-    return userData ? JSON.parse(userData) : null;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -88,66 +65,47 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
 
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
     try {
-      const normalizedEmail = email.toLowerCase();
-      
       if (mode === 'register') {
-        // Check if user already exists
-        const existingUser = getUserData(normalizedEmail);
-        if (existingUser) {
+        const { error, message } = await signUp(email, password);
+        
+        if (error) {
           toast({
-            title: "Hata",
-            description: "Bu email adresi zaten kayıtlı.",
+            title: "Kayıt Hatası",
+            description: error,
             variant: "destructive"
           });
-          setIsLoading(false);
-          return;
+        } else if (message) {
+          toast({
+            title: "Kayıt Başarılı!",
+            description: message,
+          });
+          resetForm();
+          onClose();
+        } else {
+          toast({
+            title: "Kayıt Başarılı!",
+            description: "Hesabınız başarıyla oluşturuldu.",
+          });
+          onSuccess();
         }
-
-        // Save new user
-        saveUserData(normalizedEmail, password);
-
-        toast({
-          title: "Başarılı!",
-          description: "Hesabınız başarıyla oluşturuldu.",
-        });
       } else {
-        // Login
-        const userData = getUserData(normalizedEmail);
-        if (!userData) {
+        const { error } = await signIn(email, password);
+        
+        if (error) {
           toast({
-            title: "Hata",
-            description: "Bu email adresi kayıtlı değil. Lütfen önce kayıt olun.",
+            title: "Giriş Hatası",
+            description: error,
             variant: "destructive"
           });
-          setIsLoading(false);
-          return;
-        }
-
-        if (userData.password !== password) {
+        } else {
           toast({
-            title: "Hata",
-            description: "Şifre yanlış.",
-            variant: "destructive"
+            title: "Hoş geldin!",
+            description: "Başarıyla giriş yaptınız.",
           });
-          setIsLoading(false);
-          return;
+          onSuccess();
         }
-
-        // Set current user session
-        localStorage.setItem('kiloTakipUser', JSON.stringify({ email: normalizedEmail }));
-        console.log('Login successful for:', normalizedEmail);
-
-        toast({
-          title: "Hoş geldin!",
-          description: "Başarıyla giriş yaptınız.",
-        });
       }
-
-      onSuccess();
     } catch (error) {
       console.error('Auth error:', error);
       toast({

@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 interface WeightProgram {
   currentWeight: number;
@@ -15,8 +16,7 @@ export const useDashboard = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [weightProgram, setWeightProgram] = useState<WeightProgram | null>(null);
   const { toast } = useToast();
-
-  const user = JSON.parse(localStorage.getItem('kiloTakipUser') || '{}');
+  const { user } = useAuth();
 
   useEffect(() => {
     const loadData = async () => {
@@ -40,8 +40,10 @@ export const useDashboard = () => {
       setIsLoading(false);
     };
 
-    loadData();
-  }, []);
+    if (user) {
+      loadData();
+    }
+  }, [user]);
 
   useEffect(() => {
     const handleErrorToast = (event: CustomEvent) => {
@@ -134,7 +136,7 @@ export const useDashboard = () => {
     showProfile,
     setShowProfile,
     weightProgram,
-    user,
+    user: user ? { email: user.email } : null,
     handleOnboardingComplete,
     handleWeightEntryComplete,
     handleProfileSave,
