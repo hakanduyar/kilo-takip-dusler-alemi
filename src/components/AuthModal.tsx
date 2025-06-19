@@ -31,6 +31,31 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
     return password.length >= 6;
   };
 
+  // Improved user data management
+  const saveUserData = (email: string, password: string) => {
+    const userData = {
+      email,
+      password,
+      registeredAt: new Date().toISOString()
+    };
+    
+    // Save with consistent key format
+    const userKey = `kiloTakip_user_${email.toLowerCase()}`;
+    localStorage.setItem(userKey, JSON.stringify(userData));
+    
+    // Set current user session
+    localStorage.setItem('kiloTakipUser', JSON.stringify({ email: email.toLowerCase() }));
+    
+    console.log('User data saved:', { email: email.toLowerCase(), userKey });
+  };
+
+  const getUserData = (email: string) => {
+    const userKey = `kiloTakip_user_${email.toLowerCase()}`;
+    const userData = localStorage.getItem(userKey);
+    console.log('Looking for user:', { email: email.toLowerCase(), userKey, found: !!userData });
+    return userData ? JSON.parse(userData) : null;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -67,9 +92,11 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     try {
+      const normalizedEmail = email.toLowerCase();
+      
       if (mode === 'register') {
         // Check if user already exists
-        const existingUser = localStorage.getItem(`user_${email}`);
+        const existingUser = getUserData(normalizedEmail);
         if (existingUser) {
           toast({
             title: "Hata",
@@ -81,13 +108,7 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
         }
 
         // Save new user
-        const userData = {
-          email,
-          password,
-          registeredAt: new Date().toISOString()
-        };
-        localStorage.setItem(`user_${email}`, JSON.stringify(userData));
-        localStorage.setItem('kiloTakipUser', JSON.stringify({ email }));
+        saveUserData(normalizedEmail, password);
 
         toast({
           title: "Başarılı!",
@@ -95,19 +116,18 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
         });
       } else {
         // Login
-        const userData = localStorage.getItem(`user_${email}`);
+        const userData = getUserData(normalizedEmail);
         if (!userData) {
           toast({
             title: "Hata",
-            description: "Bu email adresi kayıtlı değil.",
+            description: "Bu email adresi kayıtlı değil. Lütfen önce kayıt olun.",
             variant: "destructive"
           });
           setIsLoading(false);
           return;
         }
 
-        const user = JSON.parse(userData);
-        if (user.password !== password) {
+        if (userData.password !== password) {
           toast({
             title: "Hata",
             description: "Şifre yanlış.",
@@ -117,7 +137,9 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
           return;
         }
 
-        localStorage.setItem('kiloTakipUser', JSON.stringify({ email }));
+        // Set current user session
+        localStorage.setItem('kiloTakipUser', JSON.stringify({ email: normalizedEmail }));
+        console.log('Login successful for:', normalizedEmail);
 
         toast({
           title: "Hoş geldin!",
@@ -127,6 +149,7 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
 
       onSuccess();
     } catch (error) {
+      console.error('Auth error:', error);
       toast({
         title: "Hata",
         description: "Bir hata oluştu. Lütfen tekrar deneyin.",

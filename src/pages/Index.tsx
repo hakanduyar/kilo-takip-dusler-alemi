@@ -8,7 +8,9 @@ const Index = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem('kiloTakipUser') !== null;
+    const user = localStorage.getItem('kiloTakipUser');
+    console.log('Initial auth check:', user);
+    return user !== null;
   });
 
   const handleLogin = () => {
@@ -22,11 +24,13 @@ const Index = () => {
   };
 
   const handleAuthSuccess = () => {
+    console.log('Auth success, setting logged in state');
     setIsLoggedIn(true);
     setShowAuth(false);
   };
 
   const handleLogout = () => {
+    console.log('Logging out...');
     localStorage.removeItem('kiloTakipUser');
     setIsLoggedIn(false);
   };
