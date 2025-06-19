@@ -50,7 +50,7 @@ export const WeekInputCard = ({
       case 'completed':
         return <Badge className="bg-green-500 text-white">Tamamlandı</Badge>;
       case 'current':
-        return <Badge className="bg-blue-500 text-white">Aktif Hafta</Badge>;
+        return <Badge className="bg-teal-500 text-white">Aktif Hafta</Badge>;
       case 'overdue':
         return <Badge variant="destructive">Gecikmiş</Badge>;
       case 'pending':
@@ -92,7 +92,7 @@ export const WeekInputCard = ({
   const showInput = isEditable && (!hasExistingData || isEditing);
 
   return (
-    <Card className={`mb-4 ${status === 'current' ? 'border-blue-500 bg-blue-50' : ''}`}>
+    <Card className={`mb-4 ${status === 'current' ? 'border-teal-500 bg-teal-50' : ''}`}>
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-4">
@@ -118,18 +118,18 @@ export const WeekInputCard = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-3">
             <div className="flex items-center space-x-2">
-              <Target className="h-5 w-5 text-blue-600" />
+              <Target className="h-5 w-5 text-teal-600" />
               <div>
                 <div className="text-sm text-gray-600">Hedef Kilo</div>
-                <div className="text-xl font-bold text-blue-900">{week.targetWeight} kg</div>
+                <div className="text-xl font-bold text-teal-900">{week.targetWeight} kg</div>
               </div>
             </div>
             
             <div className="flex items-center space-x-2">
-              <div className={`w-2 h-2 rounded-full ${week.targetChange < 0 ? 'bg-green-500' : 'bg-blue-500'}`} />
+              <div className={`w-2 h-2 rounded-full ${week.targetChange < 0 ? 'bg-green-500' : 'bg-teal-500'}`} />
               <div>
                 <div className="text-sm text-gray-600">Hedef Değişim</div>
-                <div className={`text-sm font-semibold ${week.targetChange < 0 ? 'text-green-600' : 'text-blue-600'}`}>
+                <div className={`text-sm font-semibold ${week.targetChange < 0 ? 'text-green-600' : 'text-teal-600'}`}>
                   {week.targetChange > 0 ? '+' : ''}{week.targetChange} kg
                 </div>
               </div>
@@ -206,7 +206,7 @@ export const WeekInputCard = ({
               <div className="p-3 bg-gray-50 rounded-lg">
                 <div className="text-sm text-gray-600">Gerçek Değişim</div>
                 <div className={`text-lg font-semibold ${
-                  week.actualChange && week.actualChange < 0 ? 'text-green-600' : 'text-blue-600'
+                  week.actualChange && week.actualChange < 0 ? 'text-green-600' : 'text-teal-600'
                 }`}>
                   {week.actualChange !== null ? 
                     `${week.actualChange > 0 ? '+' : ''}${week.actualChange} kg` : 
@@ -216,8 +216,8 @@ export const WeekInputCard = ({
             )}
 
             {!isEditable && status === 'pending' && (
-              <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                <div className="text-sm text-blue-800">
+              <div className="bg-teal-50 p-3 rounded-lg border border-teal-200">
+                <div className="text-sm text-teal-800">
                   Bu hafta henüz başlamadı. Girişlerinizi hafta başladığında yapabilirsiniz.
                 </div>
               </div>

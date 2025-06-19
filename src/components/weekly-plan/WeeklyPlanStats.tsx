@@ -21,15 +21,15 @@ export const WeeklyPlanStats = ({
 }: WeeklyPlanStatsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+      <Card className="bg-gradient-to-br from-teal-50 to-teal-100 border-teal-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
         <CardContent className="p-6">
           <div className="flex items-center space-x-4">
-            <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-md">
+            <div className="p-3 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl shadow-md">
               <Target className="h-6 w-6 text-white" />
             </div>
             <div>
-              <p className="text-sm text-blue-700 font-bold">Toplam Hedef</p>
-              <p className="text-xl font-black text-blue-800">
+              <p className="text-sm text-teal-700 font-bold">Toplam Hedef</p>
+              <p className="text-xl font-black text-teal-800">
                 {totalTarget.toFixed(1)} kg {targetWeight < currentWeight ? 'kayıp' : 'artış'}
               </p>
             </div>
