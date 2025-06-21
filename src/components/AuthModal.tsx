@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -133,14 +132,14 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md bg-gradient-to-br from-white to-gray-50 border-0 shadow-2xl mx-4 sm:mx-auto w-full sm:w-auto">
+      <DialogContent className="w-[95vw] max-w-md mx-auto bg-gradient-to-br from-white to-gray-50 border-0 shadow-2xl">
         <DialogHeader>
           <DialogTitle className="text-xl sm:text-2xl font-bold text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             {mode === 'login' ? 'Giriş Yap' : 'Kayıt Ol'}
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 p-1">
           <div className="space-y-2">
             <Label htmlFor="email" className="text-gray-700 font-medium text-sm">
               Email
@@ -151,7 +150,7 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
               placeholder="ornek@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-11 sm:h-12 border-gray-200 focus:border-purple-400 focus:ring-purple-400 text-sm sm:text-base"
+              className="h-12 border-gray-200 focus:border-purple-400 focus:ring-purple-400 text-base"
               required
             />
           </div>
@@ -167,14 +166,14 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
                 placeholder="En az 6 karakter"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="h-11 sm:h-12 border-gray-200 focus:border-purple-400 focus:ring-purple-400 pr-10 text-sm sm:text-base"
+                className="h-12 border-gray-200 focus:border-purple-400 focus:ring-purple-400 pr-12 text-base"
                 required
               />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-0 top-0 h-11 sm:h-12 px-3 hover:bg-transparent"
+                className="absolute right-0 top-0 h-12 px-3 hover:bg-transparent"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -194,14 +193,14 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
                   placeholder="Şifrenizi tekrar girin"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="h-11 sm:h-12 border-gray-200 focus:border-purple-400 focus:ring-purple-400 pr-10 text-sm sm:text-base"
+                  className="h-12 border-gray-200 focus:border-purple-400 focus:ring-purple-400 pr-12 text-base"
                   required
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-0 top-0 h-11 sm:h-12 px-3 hover:bg-transparent"
+                  className="absolute right-0 top-0 h-12 px-3 hover:bg-transparent"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -212,7 +211,7 @@ export const AuthModal = ({ isOpen, onClose, mode, onSuccess }: AuthModalProps) 
 
           <Button
             type="submit"
-            className="w-full h-11 sm:h-12 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base"
+            className="w-full h-12 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base"
             disabled={isLoading}
           >
             {isLoading ? (

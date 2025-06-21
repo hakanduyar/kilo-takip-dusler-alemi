@@ -26,12 +26,12 @@ export const DashboardContent = ({
   getLatestWeight
 }: DashboardContentProps) => {
   return (
-    <div className="container-max container-padding py-4 sm:py-6 lg:py-8">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
       <div className="mb-6 sm:mb-8 animate-fade-in">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-3 sm:mb-4">
-          Hoş geldin! <span className="text-2xl sm:text-3xl lg:text-4xl">👋</span>
+        <h2 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-3 sm:mb-4 text-center sm:text-left">
+          Hoş geldin! <span className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl">👋</span>
         </h2>
-        <p className="text-base sm:text-lg text-gray-700 max-w-2xl leading-relaxed">
+        <p className="text-sm sm:text-base lg:text-lg text-gray-700 max-w-2xl leading-relaxed text-center sm:text-left">
           {weightProgram 
             ? "Kilo takip programınız devam ediyor. Haftalık ilerlemenizi takip edin ve hedefinize ulaşın!"
             : "Kilo takip yolculuğun burada başlıyor. İlk olarak hedeflerini belirle ve bu muhteşem dönüşümü başlat."}

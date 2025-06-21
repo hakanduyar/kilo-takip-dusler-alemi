@@ -2,63 +2,42 @@
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-
-interface WeightProgram {
-  currentWeight: number;
-  targetWeight: number;
-  programWeeks: number;
-  startDate: string;
-}
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { useWeightProgram } from '@/hooks/useWeightProgram';
 
 export const useDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-  const [weightProgram, setWeightProgram] = useState<WeightProgram | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
+  const { profile, loading: profileLoading, updateOnboardingStatus } = useUserProfile();
+  const { weightProgram, loading: programLoading, createWeightProgram } = useWeightProgram();
 
   useEffect(() => {
     const loadData = async () => {
       if (!user) return;
       
-      setIsLoading(true);
-      
-      try {
-        // Check if user has completed onboarding by looking for existing program data
-        const onboardingKey = `kiloTakipOnboarding_${user.id}`;
-        const onboardingCompleted = localStorage.getItem(onboardingKey);
-
-        console.log('Onboarding completed:', onboardingCompleted);
-
-        // If no onboarding record exists, show onboarding
-        if (!onboardingCompleted) {
-          setShowOnboarding(true);
-          setIsLoading(false);
-          return;
-        }
-
-        // Check for existing weight program
-        const savedProgram = localStorage.getItem(`kiloTakipProgram_${user.id}`);
-        if (savedProgram) {
-          const program = JSON.parse(savedProgram);
-          setWeightProgram(program);
-          console.log('Program verisi yüklendi:', program);
-        }
-
-      } catch (error) {
-        console.error('Data loading error:', error);
-        setShowOnboarding(true);
+      // Her iki loading tamamlanana kadar bekle
+      if (profileLoading || programLoading) {
+        setIsLoading(true);
+        return;
       }
 
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Eğer profil yoksa veya onboarding tamamlanmamışsa
+      if (!profile || !profile.onboarding_completed) {
+        setShowOnboarding(true);
+        setIsLoading(false);
+        return;
+      }
+
+      // Her şey hazır
+      setShowOnboarding(false);
       setIsLoading(false);
     };
 
-    if (user) {
-      loadData();
-    }
-  }, [user]);
+    loadData();
+  }, [user, profile, profileLoading, programLoading, weightProgram]);
 
   useEffect(() => {
     const handleErrorToast = (event: CustomEvent) => {
@@ -77,9 +56,8 @@ export const useDashboard = () => {
     if (!user) return;
     
     try {
-      // Mark onboarding as complete in localStorage
-      const onboardingKey = `kiloTakipOnboarding_${user.id}`;
-      localStorage.setItem(onboardingKey, 'true');
+      // Onboarding'i tamamlandı olarak işaretle
+      await updateOnboardingStatus(true);
       
       console.log('Onboarding completed for user:', user.id);
     } catch (error) {
@@ -93,23 +71,32 @@ export const useDashboard = () => {
     });
   };
 
-  const handleWeightEntryComplete = (data: { currentWeight: number; targetWeight: number; programWeeks: number }) => {
+  const handleWeightEntryComplete = async (data: { currentWeight: number; targetWeight: number; programWeeks: number }) => {
     if (!user) return;
     
-    const program: WeightProgram = {
-      ...data,
-      startDate: new Date().toISOString()
-    };
-    
-    setWeightProgram(program);
-    localStorage.setItem(`kiloTakipProgram_${user.id}`, JSON.stringify(program));
-    
-    console.log('Yeni program oluşturuldu ve kaydedildi:', program);
-    
-    toast({
-      title: "Program Başlatıldı! 🎉",
-      description: "Kilo takip programınız başarıyla oluşturuldu.",
-    });
+    try {
+      const program = await createWeightProgram({
+        current_weight: data.currentWeight,
+        target_weight: data.targetWeight,
+        program_weeks: data.programWeeks
+      });
+
+      if (program) {
+        console.log('Yeni program oluşturuldu:', program);
+        
+        toast({
+          title: "Program Başlatıldı! 🎉",
+          description: "Kilo takip programınız başarıyla oluşturuldu.",
+        });
+      }
+    } catch (error) {
+      console.error('Program creation error:', error);
+      toast({
+        title: "Hata",
+        description: "Program oluşturulurken bir hata oluştu.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleProfileSave = (profileData: any) => {
@@ -123,22 +110,22 @@ export const useDashboard = () => {
   const calculateProgress = () => {
     if (!weightProgram) return 0;
     
-    const startDate = new Date(weightProgram.startDate);
+    const startDate = new Date(weightProgram.start_date);
     const currentDate = new Date();
     const elapsedWeeks = Math.floor((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
     
-    return Math.min((elapsedWeeks / weightProgram.programWeeks) * 100, 100);
+    return Math.min((elapsedWeeks / weightProgram.program_weeks) * 100, 100);
   };
 
   const getWeeklyTarget = () => {
     if (!weightProgram) return 0;
-    return Math.abs(weightProgram.targetWeight - weightProgram.currentWeight) / weightProgram.programWeeks;
+    return Math.abs(weightProgram.target_weight - weightProgram.current_weight) / weightProgram.program_weeks;
   };
 
   const getLatestWeight = () => {
     if (!weightProgram) return undefined;
     
-    const storageKey = `kiloTakipWeeklyData_${weightProgram.currentWeight}_${weightProgram.targetWeight}_${weightProgram.programWeeks}`;
+    const storageKey = `kiloTakipWeeklyData_${weightProgram.current_weight}_${weightProgram.target_weight}_${weightProgram.program_weeks}`;
     const savedData = localStorage.getItem(storageKey);
     
     if (savedData) {
@@ -159,12 +146,20 @@ export const useDashboard = () => {
     return undefined;
   };
 
+  // WeightProgram interface'ini dashboard için uygun formata dönüştür
+  const dashboardWeightProgram = weightProgram ? {
+    currentWeight: weightProgram.current_weight,
+    targetWeight: weightProgram.target_weight,
+    programWeeks: weightProgram.program_weeks,
+    startDate: weightProgram.start_date
+  } : null;
+
   return {
     isLoading,
     showOnboarding,
     showProfile,
     setShowProfile,
-    weightProgram,
+    weightProgram: dashboardWeightProgram,
     user: user ? { email: user.email } : null,
     handleOnboardingComplete,
     handleWeightEntryComplete,
