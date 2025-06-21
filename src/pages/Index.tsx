@@ -43,26 +43,26 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-purple-700 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-purple-500/20 to-purple-700/20"></div>
       
-      <div className="relative z-10 text-center">
-        <div className="backdrop-blur-sm bg-white/10 rounded-3xl p-8 shadow-2xl border border-white/20">
-          <h1 className="text-6xl font-bold text-white mb-4 tracking-tight">
+      <div className="relative z-10 text-center w-full max-w-md mx-auto">
+        <div className="backdrop-blur-sm bg-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/20">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight">
             Kilo<span className="text-yellow-300">Takip</span>
           </h1>
-          <p className="text-xl text-white/90 mb-8 max-w-md mx-auto">
+          <p className="text-lg sm:text-xl text-white/90 mb-6 sm:mb-8 px-2">
             Sağlıklı yaşam yolculuğunuza başlayın. Kilonuzu takip edin, hedeflerinize ulaşın.
           </p>
           
-          <div className="space-y-4 w-full max-w-sm mx-auto">
+          <div className="space-y-3 sm:space-y-4 w-full">
             <Button
               onClick={handleLogin}
-              className="w-full bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 hover:border-white/40 transition-all duration-300 h-12 text-lg font-semibold rounded-xl"
+              className="w-full bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 hover:border-white/40 transition-all duration-300 h-11 sm:h-12 text-base sm:text-lg font-semibold rounded-lg sm:rounded-xl"
             >
               Giriş Yap
             </Button>
             
             <Button
               onClick={handleRegister}
-              className="w-full bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 hover:from-yellow-300 hover:to-orange-300 transition-all duration-300 h-12 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl"
+              className="w-full bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 hover:from-yellow-300 hover:to-orange-300 transition-all duration-300 h-11 sm:h-12 text-base sm:text-lg font-semibold rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl"
             >
               Kayıt Ol
             </Button>

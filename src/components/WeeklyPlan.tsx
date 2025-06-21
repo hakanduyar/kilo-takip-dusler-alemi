@@ -28,7 +28,7 @@ export const WeeklyPlan = ({ currentWeight, targetWeight, programWeeks, startDat
   const stats = calculateStats(weeklyData, currentWeight, targetWeight, programWeeks);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <WeeklyPlanStats
         totalTarget={stats.totalTarget}
         weeklyAverage={stats.weeklyAverage}
@@ -38,21 +38,23 @@ export const WeeklyPlan = ({ currentWeight, targetWeight, programWeeks, startDat
         currentWeight={currentWeight}
       />
 
-      <Tabs defaultValue="input" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 bg-blue-100 p-1 rounded-xl">
+      <Tabs defaultValue="input" className="space-y-4 sm:space-y-6">
+        <TabsList className="grid w-full grid-cols-2 bg-blue-100 p-1 rounded-xl h-auto">
           <TabsTrigger 
             value="input" 
-            className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white rounded-lg transition-all duration-200"
+            className="flex items-center gap-1 sm:gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white rounded-lg transition-all duration-200 py-2 sm:py-3 text-xs sm:text-sm"
           >
-            <Calendar className="h-4 w-4" />
-            Haftalık Takip
+            <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Haftalık Takip</span>
+            <span className="sm:hidden">Takip</span>
           </TabsTrigger>
           <TabsTrigger 
             value="charts" 
-            className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white rounded-lg transition-all duration-200"
+            className="flex items-center gap-1 sm:gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white rounded-lg transition-all duration-200 py-2 sm:py-3 text-xs sm:text-sm"
           >
-            <BarChart3 className="h-4 w-4" />
-            Grafikler
+            <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Grafikler</span>
+            <span className="sm:hidden">Grafik</span>
           </TabsTrigger>
         </TabsList>
 
@@ -65,12 +67,13 @@ export const WeeklyPlan = ({ currentWeight, targetWeight, programWeeks, startDat
             startDate={startDate}
           />
           
-          <div className="mt-6 flex justify-end">
+          <div className="mt-4 sm:mt-6 flex justify-end">
             <Button 
               onClick={saveProgress}
-              className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-semibold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
+              className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-semibold px-4 sm:px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-sm sm:text-base"
             >
-              İlerlemeyi Kaydet
+              <span className="hidden sm:inline">İlerlemeyi Kaydet</span>
+              <span className="sm:hidden">Kaydet</span>
             </Button>
           </div>
         </TabsContent>
