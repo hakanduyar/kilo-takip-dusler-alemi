@@ -39,8 +39,8 @@ export const WeeklyInputSystem = ({
   };
 
   return (
-    <Card className="bg-white/90 backdrop-blur-sm border border-blue-200 shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-t-lg">
+    <Card className="bg-white/90 backdrop-blur-sm border border-purple-200 shadow-lg">
+      <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-t-lg">
         <CardTitle className="flex items-center space-x-3">
           <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
             <Calendar className="h-6 w-6" />
@@ -48,7 +48,7 @@ export const WeeklyInputSystem = ({
           <div className="flex-1">
             <span className="text-xl font-bold">Haftalık Kilo Takibi</span>
           </div>
-          <Badge className="bg-white text-blue-600 border-0 font-semibold px-3 py-1">
+          <Badge className="bg-white text-purple-600 border-0 font-semibold px-3 py-1">
             <Star className="h-4 w-4 mr-1" />
             Hafta {currentWeek}
           </Badge>

@@ -28,8 +28,8 @@ export const DashboardContent = ({
   return (
     <div className="container-max container-padding py-8">
       <div className="mb-8 animate-fade-in">
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-          Hoş geldin! 👋
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+          Hoş geldin! <span className="text-4xl">👋</span>
         </h2>
         <p className="text-lg text-gray-700 max-w-2xl">
           {weightProgram 

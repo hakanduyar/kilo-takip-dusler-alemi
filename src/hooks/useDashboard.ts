@@ -1,7 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 interface WeightProgram {
   currentWeight: number;
@@ -20,20 +20,38 @@ export const useDashboard = () => {
 
   useEffect(() => {
     const loadData = async () => {
+      if (!user) return;
+      
       setIsLoading(true);
       
-      const onboardingCompleted = localStorage.getItem('kiloTakipOnboardingCompleted');
-      if (!onboardingCompleted) {
-        setShowOnboarding(true);
-        setIsLoading(false);
-        return;
-      }
+      try {
+        // Check if user has completed onboarding by looking for existing program data
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
 
-      const saved = localStorage.getItem('kiloTakipProgram');
-      if (saved) {
-        const program = JSON.parse(saved);
-        setWeightProgram(program);
-        console.log('Program verisi yüklendi:', program);
+        console.log('Profile data:', profileData, 'Error:', profileError);
+
+        // If no profile exists, show onboarding
+        if (!profileData || profileError) {
+          setShowOnboarding(true);
+          setIsLoading(false);
+          return;
+        }
+
+        // Check for existing weight program
+        const savedProgram = localStorage.getItem(`kiloTakipProgram_${user.id}`);
+        if (savedProgram) {
+          const program = JSON.parse(savedProgram);
+          setWeightProgram(program);
+          console.log('Program verisi yüklendi:', program);
+        }
+
+      } catch (error) {
+        console.error('Data loading error:', error);
+        setShowOnboarding(true);
       }
 
       await new Promise(resolve => setTimeout(resolve, 1500));
@@ -58,7 +76,27 @@ export const useDashboard = () => {
     return () => window.removeEventListener('showErrorToast' as any, handleErrorToast);
   }, [toast]);
 
-  const handleOnboardingComplete = () => {
+  const handleOnboardingComplete = async () => {
+    if (!user) return;
+    
+    try {
+      // Create or update user profile to mark onboarding as complete
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          email: user.email,
+          onboarding_completed: true,
+          created_at: new Date().toISOString()
+        });
+
+      if (error) {
+        console.error('Profile creation error:', error);
+      }
+    } catch (error) {
+      console.error('Onboarding completion error:', error);
+    }
+
     setShowOnboarding(false);
     toast({
       title: "Hoş Geldiniz! 🎉",
@@ -67,13 +105,15 @@ export const useDashboard = () => {
   };
 
   const handleWeightEntryComplete = (data: { currentWeight: number; targetWeight: number; programWeeks: number }) => {
+    if (!user) return;
+    
     const program: WeightProgram = {
       ...data,
       startDate: new Date().toISOString()
     };
     
     setWeightProgram(program);
-    localStorage.setItem('kiloTakipProgram', JSON.stringify(program));
+    localStorage.setItem(`kiloTakipProgram_${user.id}`, JSON.stringify(program));
     
     console.log('Yeni program oluşturuldu ve kaydedildi:', program);
     
