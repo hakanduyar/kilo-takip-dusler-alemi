@@ -1,7 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 
 interface WeightProgram {
   currentWeight: number;
@@ -26,16 +26,13 @@ export const useDashboard = () => {
       
       try {
         // Check if user has completed onboarding by looking for existing program data
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
+        const onboardingKey = `kiloTakipOnboarding_${user.id}`;
+        const onboardingCompleted = localStorage.getItem(onboardingKey);
 
-        console.log('Profile data:', profileData, 'Error:', profileError);
+        console.log('Onboarding completed:', onboardingCompleted);
 
-        // If no profile exists, show onboarding
-        if (!profileData || profileError) {
+        // If no onboarding record exists, show onboarding
+        if (!onboardingCompleted) {
           setShowOnboarding(true);
           setIsLoading(false);
           return;
@@ -80,19 +77,11 @@ export const useDashboard = () => {
     if (!user) return;
     
     try {
-      // Create or update user profile to mark onboarding as complete
-      const { error } = await supabase
-        .from('profiles')
-        .upsert({
-          id: user.id,
-          email: user.email,
-          onboarding_completed: true,
-          created_at: new Date().toISOString()
-        });
-
-      if (error) {
-        console.error('Profile creation error:', error);
-      }
+      // Mark onboarding as complete in localStorage
+      const onboardingKey = `kiloTakipOnboarding_${user.id}`;
+      localStorage.setItem(onboardingKey, 'true');
+      
+      console.log('Onboarding completed for user:', user.id);
     } catch (error) {
       console.error('Onboarding completion error:', error);
     }
