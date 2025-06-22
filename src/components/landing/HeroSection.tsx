@@ -66,9 +66,9 @@ export const HeroSection = ({
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in" style={{
+          <div style={{
           animationDelay: '0.6s'
-        }}>
+        }} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4 animate-fade-in">
             <Button size="lg" onClick={() => onAuthClick('register')} className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg group">
               Ücretsiz Başlayın
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
