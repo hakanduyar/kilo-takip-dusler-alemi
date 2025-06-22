@@ -58,9 +58,9 @@ export const HeroSection = ({
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{
+          <p style={{
           animationDelay: '0.4s'
-        }}>
+        }} className="text-xl text-gray-600 mb-5 max-w-3xl mx-auto leading-relaxed animate-fade-in md:text-2xl">
             Akıllı takip sistemi ile kilo verme hedeflerinize ulaşın. 
             Haftalık planlarınızı oluşturun, ilerlemenizi görün ve motivasyonunuzu koruyun.
           </p>
