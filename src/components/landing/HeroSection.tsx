@@ -40,7 +40,7 @@ export const HeroSection = ({
       </div>
       
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-4xl mx-auto -mt-7">
+        <div className="text-center max-w-4xl mx-auto -mt-12">
           {/* Badge */}
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-6 animate-fade-in">
             <span className="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></span>
