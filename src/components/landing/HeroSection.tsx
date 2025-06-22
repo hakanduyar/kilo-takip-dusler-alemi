@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, Rocket, BarChart3, FileText } from 'lucide-react';
 
 interface HeroSectionProps {
   onAuthClick: (mode: 'login' | 'register') => void;
@@ -8,16 +8,31 @@ interface HeroSectionProps {
 
 export const HeroSection = ({ onAuthClick }: HeroSectionProps) => {
   return (
-    <section className="relative py-20 lg:py-32 overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50" />
-      <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200/30 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+    <section className="relative py-12 lg:py-20 overflow-hidden">
+      {/* Enhanced Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-purple-50 to-yellow-50" />
+      <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300/40 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-300/40 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+      <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-yellow-300/30 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }} />
+      
+      {/* Floating Icons */}
+      <div className="absolute top-20 left-20 text-6xl animate-bounce-gentle" style={{ animationDelay: '0s' }}>
+        <Rocket className="w-12 h-12 text-blue-500" />
+      </div>
+      <div className="absolute top-32 right-32 text-6xl animate-bounce-gentle" style={{ animationDelay: '1s' }}>
+        <BarChart3 className="w-10 h-10 text-purple-500" />
+      </div>
+      <div className="absolute bottom-32 left-32 text-6xl animate-bounce-gentle" style={{ animationDelay: '2s' }}>
+        <FileText className="w-11 h-11 text-yellow-600" />
+      </div>
+      <div className="absolute top-1/2 right-20 text-6xl animate-bounce-gentle" style={{ animationDelay: '3s' }}>
+        <Rocket className="w-9 h-9 text-green-500 rotate-45" />
+      </div>
       
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto">
           {/* Badge */}
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-8 animate-fade-in">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-6 animate-fade-in">
             <span className="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></span>
             Kilo verme yolculuğunuzu başlatın
           </div>
@@ -31,13 +46,13 @@ export const HeroSection = ({ onAuthClick }: HeroSectionProps) => {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.4s' }}>
+          <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.4s' }}>
             Akıllı takip sistemi ile kilo verme hedeflerinize ulaşın. 
             Haftalık planlarınızı oluşturun, ilerlemenizi görün ve motivasyonunuzu koruyun.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <Button 
               size="lg" 
               onClick={() => onAuthClick('register')}

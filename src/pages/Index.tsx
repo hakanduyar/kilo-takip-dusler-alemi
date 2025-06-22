@@ -6,6 +6,7 @@ import { LandingHeader } from '@/components/landing/LandingHeader';
 import { HeroSection } from '@/components/landing/HeroSection';
 import { FeaturesSection } from '@/components/landing/FeaturesSection';
 import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
+import { PricingSection } from '@/components/landing/PricingSection';
 import { CTASection } from '@/components/landing/CTASection';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -29,6 +30,7 @@ const Index = () => {
       <HeroSection onAuthClick={handleAuthClick} />
       <FeaturesSection />
       <TestimonialsSection />
+      <PricingSection onAuthClick={handleAuthClick} />
       <CTASection onAuthClick={handleAuthClick} />
       
       {showAuthModal && (
@@ -36,7 +38,6 @@ const Index = () => {
           isOpen={showAuthModal}
           onClose={() => setShowAuthModal(false)}
           mode={authMode}
-          onModeChange={setAuthMode}
         />
       )}
     </div>
