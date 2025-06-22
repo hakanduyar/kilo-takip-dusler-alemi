@@ -24,8 +24,10 @@ export const useDashboard = () => {
         return;
       }
 
-      // Eğer profil yoksa veya onboarding tamamlanmamışsa
-      if (!profile || !profile.onboarding_completed) {
+      // Onboarding mantığını düzenle - sadece yeni kayıt olan kullanıcılar için
+      const isNewUser = profile && !profile.onboarding_completed;
+      
+      if (isNewUser) {
         setShowOnboarding(true);
         setIsLoading(false);
         return;
@@ -37,7 +39,7 @@ export const useDashboard = () => {
     };
 
     loadData();
-  }, [user, profile, profileLoading, programLoading, weightProgram]);
+  }, [user, profile, profileLoading, programLoading]);
 
   useEffect(() => {
     const handleErrorToast = (event: CustomEvent) => {
